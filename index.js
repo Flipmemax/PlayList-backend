@@ -18,6 +18,12 @@ if (process.env.DELAY) {
   });
 }
 
+const authRouter = require("./routers/auth");
+const playlistRouter = require("./routers/playlist");
+
+app.use("/", authRouter);
+app.use("/playlist", playlistRouter);
+
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
