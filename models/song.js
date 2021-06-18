@@ -15,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   song.init(
     {
       title: { type: DataTypes.STRING, allowNull: false },
-      artist: DataTypes.STRING,
-      image: DataTypes.STRING,
-      description: DataTypes.STRING,
-      uri: DataTypes.STRING,
-      origin: DataTypes.STRING,
+      artist: { type: DataTypes.STRING, allowNull: false },
+      image: { type: DataTypes.STRING, allowNull: true },
+      uri: { type: DataTypes.STRING, allowNull: false },
+      origin: { type: DataTypes.STRING, allowNull: true },
     },
     {
       sequelize,

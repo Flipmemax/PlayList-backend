@@ -2,6 +2,7 @@ const { Router } = require("express");
 const authMiddleware = require("../auth/middleware");
 const PlayList = require("../models").playlist;
 const Song = require("../models").song;
+const User = require("../models").user;
 
 const router = new Router();
 
@@ -16,8 +17,10 @@ router.get("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.post("/", authMiddleware, async (req, res, next) => {
+router.post("/create", authMiddleware, async (req, res, next) => {
   try {
+    const user = await User.findByPk(req.user.id);
+
     const { name } = req.body;
 
     if (!name) {
@@ -25,7 +28,12 @@ router.post("/", authMiddleware, async (req, res, next) => {
         .status(400)
         .send({ message: "Please provide a name for the playlist" });
     }
-    const playlist = await PlayList.create({ name, userId: req.user.id });
+
+    const playlist = await PlayList.create({
+      name,
+      userId: user.id,
+    });
+
     return res.status(201).send({ message: "Playlist created", playlist });
   } catch (error) {
     next(error);
