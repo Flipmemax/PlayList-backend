@@ -40,26 +40,18 @@ router.post("/create", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res, next) => {
+router.get("/:userId/", async (req, res, next) => {
   try {
-    const { id } = req.params;
-
-    console.log(id);
-    if (isNaN(parseInt(id))) {
-      return res
-        .status(400)
-        .send({ message: "Playlist id should be a number" });
-    }
-
-    const playlist = await PlayList.findByPk(id, {
-      include: [Song],
+    const userId = parseInt(req.params.userId);
+    const user = await User.findByPk(userId, {
+      include: { model: PlayList, include: { model: Song } },
     });
 
-    if (playlist === null) {
-      return res.status(404).send({ message: "Playlist not found" });
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send("User not found");
     }
-
-    res.status(200).send({ message: "ok", playlist });
   } catch (error) {
     next(error);
   }
