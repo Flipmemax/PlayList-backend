@@ -48,6 +48,7 @@ router.get("/:userId/", async (req, res, next) => {
     });
 
     if (user) {
+      delete user.dataValues["password"];
       res.send(user);
     } else {
       res.status(404).send("User not found");
