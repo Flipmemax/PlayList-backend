@@ -6,9 +6,10 @@ const User = require("../models").user;
 
 const router = new Router();
 
-router.get("/", authMiddleware, async (req, res, next) => {
+router.get("/:id", authMiddleware, async (req, res, next) => {
   try {
-    const playlists = await PlayList.findAll({
+    const id = parseInt(req.params.id);
+    const playlists = await PlayList.findByPk(id, {
       include: [Song],
     });
     res.status(200).send({ message: "ok", playlists });
