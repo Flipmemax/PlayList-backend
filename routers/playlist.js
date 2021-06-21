@@ -41,7 +41,7 @@ router.post("/create", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/:userId/", authMiddleware, async (req, res, next) => {
+router.get("/mylists/:userId/", authMiddleware, async (req, res, next) => {
   try {
     const userId = parseInt(req.params.userId);
     const user = await User.findByPk(userId, {
