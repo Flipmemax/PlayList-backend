@@ -108,8 +108,8 @@ router.delete("/:id/delete", authMiddleware, async (req, res, next) => {
 
 router.delete("/song/:id/delete", authMiddleware, async (req, res, next) => {
   try {
-    const songId = parseInt(req.params.id);
-    const song = await Song.findByPk(songId);
+    const songID = parseInt(req.params.id);
+    const song = await Song.findByPk(songID);
 
     const deleteSong = await song.destroy();
 
