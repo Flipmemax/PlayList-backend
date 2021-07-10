@@ -97,6 +97,7 @@ router.delete("/:id/delete", authMiddleware, async (req, res, next) => {
 
     return res.status(200).send({
       message: "PlayList successfully deleted",
+      playlist,
     });
   } catch (error) {
     next(error);
@@ -112,7 +113,7 @@ router.delete("/song/:id/delete", authMiddleware, async (req, res, next) => {
 
     return res
       .status(200)
-      .send({ message: "Song successfully deleted", song, deleteSong });
+      .send({ message: "Song successfully deleted", deleteSong });
   } catch (error) {
     next(error);
   }
