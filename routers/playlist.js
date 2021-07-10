@@ -86,4 +86,36 @@ router.post("/:id/song", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.delete("/:id/delete", authMiddleware, async (req, res, next) => {
+  try {
+    const playlistId = parseInt(req.params.id);
+    const playlist = await PlayList.findByPk(playlistId, { include: [Song] });
+
+    playlist.songs.forEach(
+      async (songs) => (await songs.destroy()) && (await playlist.destroy()),
+    );
+
+    return res.status(200).send({
+      message: "PlayList successfully deleted",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/song/:id/delete", authMiddleware, async (req, res, next) => {
+  try {
+    const songId = parseInt(req.params.id);
+    const song = await Song.findByPk(songId);
+
+    const deleteSong = await song.destroy();
+
+    return res
+      .status(200)
+      .send({ message: "Song successfully deleted", song, deleteSong });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
