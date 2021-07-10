@@ -91,13 +91,15 @@ router.delete("/:id/delete", authMiddleware, async (req, res, next) => {
     const playlistId = parseInt(req.params.id);
     const playlist = await PlayList.findByPk(playlistId, { include: [Song] });
 
+    if (playlist.songs.length === 0) {
+      await playlist.destroy();
+    }
     playlist.songs.forEach(
       async (songs) => (await songs.destroy()) && (await playlist.destroy()),
     );
 
     return res.status(200).send({
       message: "PlayList successfully deleted",
-      playlist,
     });
   } catch (error) {
     next(error);
